@@ -1,0 +1,4 @@
+-- INSERT INTO user(title, description, priority) VALUES ('Nauka Springa', 'Nauczyć się obsługiwać bazy danych w Springu', 90);
+-- INSERT INTO user(title, description, priority) VALUES ('aaaa', 'Nauczyć się obsługiwać bazy danych w Springu', 90);
+-- INSERT INTO user(title, description, priority) VALUES ('ddddd', 'Nauczyć się obsługiwać bazy danych w Springu', 90);
+-- INSERT INTO user(title, description, priority) VALUES ('cccc', 'Nauczyć się obsługiwać bazy danych w Springu', 90);

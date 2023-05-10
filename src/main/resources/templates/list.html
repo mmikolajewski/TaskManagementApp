@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista</title>
+</head>
+<body>
+<div style="margin: auto; width: 1300px">
+
+    <h2>Lista zadań</h2>
+    <a href="/">Wszystkie</a>
+    <span> </span>
+
+    <div style="display: inline-block" th:each="category : ${T(pl.javastart.tasks.Category).values()}">
+        <a th:href="|/?category=${category.name()}|" th:text="${category.description}">Rodzaj</a>
+        <span> </span>
+    </div>
+    <table class="table table-dark table-striped">
+        <thead>
+        <tr>
+            <th>Nazwa</th>
+            <th>Opis</th>
+            <th>Kategoria</th>
+            <th>Data rozpoczęcia</th>
+            <th>Data zakończenia</th>
+            <th>Priorytet</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr  th:each="task: ${taskList}">
+            <td th:text="${task.title}"></td>
+            <td th:text="${task.description}"></td>
+            <td th:text="${task.category.description}"></td>
+            <td th:text="${task.startTime}"></td>
+            <td th:text="${task.completionTime}"></td>
+            <td th:text="${task.priority}"></td>
+            <td> <a href="editTask.html">Edytuj</a> </td>
+
+        </tr>
+        </tbody>
+
+    </table>
+
+</div>
+</body>
+</html>
