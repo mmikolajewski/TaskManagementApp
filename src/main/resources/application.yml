@@ -1,11 +1,12 @@
 spring:
+  h2:
+    console:
+      path: /h2-console
   datasource:
-    url: jdbc:mysql://localhost:3306/tasks?serverTimezone=UTC
-    username: root
-    password: admin
+    username: admin
+    password:
+    url: jdbc:h2:mem:test
   jpa:
-    database-platform: org.hibernate.dialect.MySQL5Dialect
-    generate-ddl: true
     hibernate:
       ddl-auto: create-drop
     show-sql: true
@@ -13,6 +14,7 @@ spring:
       hibernate:
         hbm2ddl:
           import_files_sql_extractor: org.hibernate.tool.schema.internal.script.MultiLineSqlScriptExtractor
+
 
 
 

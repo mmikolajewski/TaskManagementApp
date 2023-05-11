@@ -3,21 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <title>Lista</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 </head>
 <body>
-<div style="margin: auto; width: 1300px">
+<div style="margin: auto; width: 1300px; margin-top: 100px">
 
-    <h2>Lista zadań</h2>
-    <a href="/">Wszystkie</a>
+    <h2 style="text-align: center" class="display-1">Lista zadań</h2>
+    <a href="/" style="color: indianred"><-Powrót do strony głównej</a>
     <span> </span>
 
-    <div style="display: inline-block" th:each="category : ${T(pl.javastart.tasks.Category).values()}">
-        <a th:href="|/?category=${category.name()}|" th:text="${category.description}">Rodzaj</a>
+    <div class="nav nav-tabs" style="display: inline-block" th:each="category : ${T(pl.javastart.tasks.Category).values()}">
+
+
+        <a class="nav-link active" style="color: black"
+           th:if="${param.containsKey('list')}"
+           th:href="|/list?category=${category.name()}|" th:text="${category.description}">Rodzaj</a>
+
+        <a class="nav-link active" style="color: black"
+           th:if="${param.containsKey('archive')}"
+           th:href="|/archive?category=${category.name()}|" th:text="${category.description}">Rodzaj</a>
+
+
+
+
         <span> </span>
     </div>
     <table class="table table-dark table-striped">
         <thead>
-        <tr>
+        <tr style="text-align: center">
             <th>Nazwa</th>
             <th>Opis</th>
             <th>Kategoria</th>
@@ -28,14 +42,17 @@
         </tr>
         </thead>
         <tbody>
-        <tr  th:each="task: ${taskList}">
+        <tr style="text-align: center"  th:each="task: ${taskList}">
             <td th:text="${task.title}"></td>
             <td th:text="${task.description}"></td>
             <td th:text="${task.category.description}"></td>
             <td th:text="${task.startTime}"></td>
-            <td th:text="${task.completionTime}"></td>
+            <td>
+                <a th:if="${task.completionTime == null}" th:href="|/list?deleteid=${task.id}|" style="color: red;" >Zakończ</a>
+                <span th:unless="${task.completionTime == null}" th:text="${task.getCompletionTime()}" style="color: green;" >Zakończ</span>
+            </td>
             <td th:text="${task.priority}"></td>
-            <td> <a href="editTask.html">Edytuj</a> </td>
+            <td> <a th:href="|/edit?id=${task.id}|" >Edytuj</a> </td>
 
         </tr>
         </tbody>

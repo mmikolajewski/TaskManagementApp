@@ -10,23 +10,18 @@ class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "title")
     private String title;
-    @Column(name = "description")
     private String description;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "category")
     private Category category;
-    @Column(name = "priority")
+
     private int priority;
 
 
     @DateTimeFormat(pattern = "yyy-MM-dd")
-    @Column(name = "start_ime")
     private LocalDateTime startTime;
     @DateTimeFormat(pattern = "yyy-MM-dd")
-    @Column(name = "completion_time")
     private LocalDateTime completionTime;
 
     public Task() {
@@ -37,6 +32,7 @@ class Task {
         this.description = description;
         this.category = category;
         this.priority = priority;
+        this.startTime = LocalDateTime.now();
     }
 
     public Long getId() {
