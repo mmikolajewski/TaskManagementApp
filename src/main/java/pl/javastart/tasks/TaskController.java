@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,7 +34,7 @@ public class TaskController {
 
         if (deleteid != null) {
             Task task = taskRepository.findById(deleteid).orElseThrow();
-            task.setCompletionTime(LocalDateTime.now());
+            task.setCompletionTime(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES));
             taskRepository.save(task);
         }
 
@@ -104,7 +105,7 @@ public class TaskController {
 
     @PostMapping("/add")
     public String addTask(Task task) {
-        task.setStartTime(LocalDateTime.now());
+        task.setStartTime(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES));
 
         taskRepository.save(task);
 

@@ -17,11 +17,11 @@
 
 
         <a class="nav-link active" style="color: black"
-           th:if="${param.containsKey('list')}"
+           th:if=""
            th:href="|/list?category=${category.name()}|" th:text="${category.description}">Rodzaj</a>
 
         <a class="nav-link active" style="color: black"
-           th:if="${param.containsKey('archive')}"
+           th:if=""
            th:href="|/archive?category=${category.name()}|" th:text="${category.description}">Rodzaj</a>
 
 
@@ -46,10 +46,10 @@
             <td th:text="${task.title}"></td>
             <td th:text="${task.description}"></td>
             <td th:text="${task.category.description}"></td>
-            <td th:text="${task.startTime}"></td>
+            <td th:text="${task.startTime.toString().replace('T', ' ')}"></td>
             <td>
                 <a th:if="${task.completionTime == null}" th:href="|/list?deleteid=${task.id}|" style="color: red;" >Zakończ</a>
-                <span th:unless="${task.completionTime == null}" th:text="${task.getCompletionTime()}" style="color: green;" >Zakończ</span>
+                <span th:unless="${task.completionTime == null}" th:text="${task.completionTime.toString().replace('T', ' ')}" style="color: green;" >Zakończ</span>
             </td>
             <td th:text="${task.priority}"></td>
             <td> <a th:href="|/edit?id=${task.id}|" >Edytuj</a> </td>
