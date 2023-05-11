@@ -15,13 +15,12 @@
 
     <div class="nav nav-tabs" style="display: inline-block" th:each="category : ${T(pl.javastart.tasks.Category).values()}">
 
-
+        <!--           th:if="${#strings.contains(${requestURI}, 'list')}"-->
         <a class="nav-link active" style="color: black"
-           th:if=""
            th:href="|/list?category=${category.name()}|" th:text="${category.description}">Rodzaj</a>
 
+        <!--           th:if="${#strings.contains(${requestURI}, 'archive')}"-->
         <a class="nav-link active" style="color: black"
-           th:if=""
            th:href="|/archive?category=${category.name()}|" th:text="${category.description}">Rodzaj</a>
 
 
