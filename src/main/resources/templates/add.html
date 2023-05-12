@@ -11,12 +11,9 @@
 </head>
 <body>
 
-<div style="width: 100%; max-width: 1000px; margin: 100px auto">
-
-  <a href="/">Powrót do MENU</a>
-
+<div class="container text-center row align-items-cente mx-auto col-10 col-md-8 col-lg-6 "  >
   <form action="/add" method="post" th:object="${taskToCreate}">
-
+    <a href="/" class="nav-link active text-danger"><-Powrót do strony głównej</a>
     <div class="mb-3">
       <label for="title" class="form-label">Tytuł</label>
       <input placeholder="nazwa" type="text" class="form-control" id="title" th:field="*{title}">
@@ -40,7 +37,6 @@
 
       </select>
 
-
       <div class="mb-3">
         <label for="priority" class="form-label">Priorytet</label>
         <input type="number" class="form-control" id="priority" th:field="*{priority}">
@@ -49,9 +45,8 @@
       <div class="mb-3">
         <button type="submit" class="btn btn-primary mb-3">Dodaj</button>
       </div>
-
+    </div>
   </form>
-
 </div>
 
 </body>

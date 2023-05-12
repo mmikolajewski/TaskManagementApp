@@ -9,52 +9,53 @@
 <body>
 <div class="container text-center">
 
-    <h2 class="display-1">Lista zadań do wykonania</h2>
+    <h2 class="display-1">Archiwum</h2>
     <span> </span>
-    <span> </span>
-    <div class="nav nav-tabs nav justify-content-center padding-bottom" >
+    <div class="nav nav-tabs justify-content-center" >
         <a href="/" class="nav-link active text-danger"><-Powrót do strony głównej</a>
         <a class="nav-link active" style="color: black"
-           href="/list" >Wszystkie</a>
+           href="/archive" >Wszystkie</a>
         <a class="nav-link active" style="color: black" th:each="category : ${T(pl.javastart.tasks.Category).values()}"
-           th:href="|/list?category=${category.name()}|" th:text="${category.description}">Rodzaj</a>
+           th:href="|/archive?category=${category.name()}|" th:text="${category.description}">Rodzaj</a>
         <span> </span>
     </div>
-    <table class="table table-dark table-striped" >
+    <table class="table table-dark table-striped">
         <thead>
         <tr class="text-center">
             <th>Nazwa</th>
             <th>Opis</th>
             <th>Kategoria</th>
             <th>Data dodania</th>
-            <th>Data startu</th>
-            <th></th>
+            <th>Data rozpoczęcia</th>
+            <th>Data zakończenia</th>
+            <th>Czas trwania</th>
             <th>Priorytet</th>
             <th></th>
         </tr>
         </thead>
         <tbody>
-        <tr class="text-center" th:each="task: ${taskList}">
+        <tr class="text-center"  th:each="task: ${taskList}">
             <td th:text="${task.title}"></td>
             <td th:text="${task.description}"></td>
             <td th:text="${task.category.description}"></td>
             <td th:text="${task.addTime.toString().replace('T', ' ')}"></td>
             <td>
-                    <a th:if="${task.startTime == null}" th:href="|/list?startid=${task.id}|" class="text-warning" >START</a>
-                <span th:unless="${task.startTime == null}" th:text="${task.startTime.toString().replace('T', ' ')}" class="text-success" ></span>
-
+            <span th:if="${task.startTime == null}" style="color: orange;" >NIE ROZPOCZĘTO</span>
+            <span th:unless="${task.startTime == null}" th:text="${task.startTime.toString().replace('T', ' ')}" style="color: green;" ></span>
             </td>
+            <td th:text="${task.completionTime.toString().replace('T', ' ')}"></td>
             <td>
-                <a th:if="${task.completionTime == null}" th:href="|/list?deleteid=${task.id}|" class="text-danger" >ZAKOŃCZ</a>
-                <span th:unless="${task.completionTime == null}" th:text="${task.completionTime.toString().replace('T', ' ')}" class="text-success" ></span>
+                <span th:if="${task.startTime == null}" ></span>
+                <span th:unless="${task.startTime == null}" th:text="${taskService.printPeriod(task.startTime, task.completionTime)}" style="color: green;" ></span>
             </td>
             <td th:text="${task.priority}"></td>
-            <td> <a th:href="|/edit?id=${task.id}|" >EDYTUJ</a> </td>
+            <td> <a th:href="|/edit?id=${task.id}|" >Edytuj</a> </td>
 
         </tr>
         </tbody>
+
     </table>
-    <a href="/archive"class="badge rounded-pill p-3 mb-2 bg-secondary text-white">Wyświetl archiwum</a></br>
+
 </div>
 </body>
 </html>

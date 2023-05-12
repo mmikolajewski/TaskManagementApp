@@ -2,9 +2,9 @@ package pl.javastart.tasks;
 
 public enum Category {
 
-    ALL("Wszystkie"),HOUSE("Dom"), GARDEN("Ogród"), FINANCE("Finanse"), PERSONAL("Osobiste");
+    HOUSE("Dom"), GARDEN("Ogród"), FINANCE("Finanse"), PERSONAL("Osobiste");
 
-    private String description;
+    private final String description;
 
     Category(String description) {
         this.description = description;

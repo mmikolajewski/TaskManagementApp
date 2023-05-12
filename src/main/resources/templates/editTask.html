@@ -11,11 +11,13 @@
 </head>
 <body>
 
-<div style="width: 100%; max-width: 1000px; margin: 100px auto">
+<div class="container text-center row align-items-cente mx-auto col-10 col-md-8 col-lg-6 " >
 
-    <a href="/list">Powrót do Listy</a>
+    <a href="/list" class="nav-link active text-danger"><-Powrót do listy</a>
 
-    <form action="/add" method="post" th:object="${taskToEdit}">
+    <form action="/edit" method="post" th:object="${taskToEdit}">
+
+        <input th:field="*{id}" hidden="">
 
         <div class="mb-3">
             <label for="title" class="form-label">Tytuł</label>
@@ -31,15 +33,12 @@
             <label for="category" class="form-label">Kategoria</label>
             <select class="form-select" id="category" th:field="*{category}">
                 <option value="" th:disabled="disabled" th:selected="selected">Brak</option>
-
                 <option th:each="category : ${T(pl.javastart.tasks.Category).values()}"
                         th:value="${category}"
                         th:text="${category.description}">
                     nazwa_kategorii
                 </option>
-
             </select>
-
         <div class="mb-3">
             <label for="priority" class="form-label">Priorytet</label>
             <input type="number" class="form-control" id="priority" th:field="*{priority}">
@@ -48,11 +47,8 @@
         <div class="mb-3">
             <button type="submit" class="btn btn-primary mb-3">Edytuj</button>
         </div>
-
-
+        </div>
     </form>
-
 </div>
-
 </body>
 </html>

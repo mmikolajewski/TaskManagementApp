@@ -1,11 +1,9 @@
 package pl.javastart.tasks;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -17,10 +15,12 @@ import java.util.Optional;
 @Controller
 public class TaskController {
 
-    TaskRepository taskRepository;
+    private final TaskRepository taskRepository;
+    private final TaskService taskService;
 
-    public TaskController(TaskRepository taskRepository) {
+    public TaskController(TaskRepository taskRepository, TaskService taskService) {
         this.taskRepository = taskRepository;
+        this.taskService = taskService;
     }
 
     @GetMapping("/")
@@ -30,8 +30,16 @@ public class TaskController {
     }
 
     @GetMapping("/list")
-    String list(Model model, @RequestParam( defaultValue = "ALL",required = false) Category category, @RequestParam(required = false) Long deleteid) {
+    String list(Model model,
+                @RequestParam(required = false) Category category,
+                @RequestParam(required = false) Long deleteid,
+                @RequestParam(required = false) Long startid) {
 
+        if (startid != null) {
+            Task task = taskRepository.findById(startid).orElseThrow();
+            task.setStartTime(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES));
+            taskRepository.save(task);
+        }
         if (deleteid != null) {
             Task task = taskRepository.findById(deleteid).orElseThrow();
             task.setCompletionTime(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES));
@@ -39,10 +47,10 @@ public class TaskController {
         }
 
         List<Task> taskList;
-        if (!(category.equals(Category.ALL))) {
-            taskList = taskRepository.findByCategoryAndCompletionTimeIsNull(category);
+        if (category != null) {
+            taskList = taskRepository.findByCategoryAndCompletionTimeIsNullOrderByPriorityDesc(category);
         } else {
-            taskList = taskRepository.findAllByCompletionTimeIsNull();
+            taskList = taskRepository.findAllByCompletionTimeIsNullOrderByPriorityDesc();
         }
 
         model.addAttribute("taskList", taskList);
@@ -53,18 +61,20 @@ public class TaskController {
 
     @GetMapping("/archive")
     String archive(Model model,
-                   @RequestParam( defaultValue = "ALL",required = false) Category category) {
+                   @RequestParam(required = false) Category category) {
 
         List<Task> taskList;
-        if (!(category.equals(Category.ALL))) {
+        if (category != null) {
             taskList = taskRepository.findByCategoryAndCompletionTimeIsNotNull(category);
         } else {
             taskList = taskRepository.findAllByCompletionTimeIsNotNull();
         }
 
+        model.addAttribute("taskService", taskService);
+
         model.addAttribute("taskList", taskList);
 
-        return "/list";
+        return "/archive";
 
     }
 
@@ -83,17 +93,20 @@ public class TaskController {
     }
 
     @PostMapping("/edit")
-    public String editTask(@RequestParam Long id, Task task) {
-        Task returnedTask = taskRepository.findById(id).orElseThrow();
+    public String editTask(Task task) {
+        Optional<Task> returnedTask = taskRepository.findById(task.getId());
 
-        returnedTask.setTitle(task.getTitle());
-        returnedTask.setDescription(task.getDescription());
-        returnedTask.setCategory(task.getCategory());
-        returnedTask.setPriority(task.getPriority());
+        if (returnedTask.isPresent()) {
+            Task task1 = returnedTask.get();
+            task1.setTitle(task.getTitle());
+            task1.setDescription(task.getDescription());
+            task1.setCategory(task.getCategory());
+            task1.setPriority(task.getPriority());
 
-        taskRepository.save(returnedTask);
-
-        return "redirect:/";
+            taskRepository.save(task1);
+            return "redirect:/list";
+        }
+            return "redirect:/";
     }
 
     @GetMapping("/add")
@@ -105,11 +118,11 @@ public class TaskController {
 
     @PostMapping("/add")
     public String addTask(Task task) {
-        task.setStartTime(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES));
+        task.setAddTime(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES));
 
         taskRepository.save(task);
 
-        return "redirect:/";
+        return "redirect:/list";
     }
 
 }

@@ -7,8 +7,6 @@ spring:
     password:
     url: jdbc:h2:mem:test
   jpa:
-    hibernate:
-      ddl-auto: create-drop
     show-sql: true
     properties:
       hibernate:

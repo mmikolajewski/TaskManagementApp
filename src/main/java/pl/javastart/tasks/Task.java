@@ -16,20 +16,11 @@ class Task {
     @Enumerated(EnumType.STRING)
     private Category category;
     private int priority;
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime addTime;
     private LocalDateTime startTime;
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime completionTime;
 
     public Task() {
-    }
-
-    public Task(String title, String description, Category category, int priority) {
-        this.title = title;
-        this.description = description;
-        this.category = category;
-        this.priority = priority;
-        this.startTime = LocalDateTime.now();
     }
 
     public Long getId() {
@@ -86,5 +77,13 @@ class Task {
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    public LocalDateTime getAddTime() {
+        return addTime;
+    }
+
+    public void setAddTime(LocalDateTime addTime) {
+        this.addTime = addTime;
     }
 }
