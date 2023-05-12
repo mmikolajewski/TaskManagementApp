@@ -40,12 +40,12 @@
             <td th:text="${task.category.description}"></td>
             <td th:text="${task.addTime.toString().replace('T', ' ')}"></td>
             <td>
-                    <a th:if="${task.startTime == null}" th:href="|/list?startid=${task.id}|" class="text-warning" >START</a>
+                    <a th:if="${task.startTime == null}" th:href="|/list?startId=${task.id}|" class="text-warning" >START</a>
                 <span th:unless="${task.startTime == null}" th:text="${task.startTime.toString().replace('T', ' ')}" class="text-success" ></span>
 
             </td>
             <td>
-                <a th:if="${task.completionTime == null}" th:href="|/list?deleteid=${task.id}|" class="text-danger" >ZAKOŃCZ</a>
+                <a th:if="${task.completionTime == null}" th:href="|/list?finishId=${task.id}|" class="text-danger" >ZAKOŃCZ</a>
                 <span th:unless="${task.completionTime == null}" th:text="${task.completionTime.toString().replace('T', ' ')}" class="text-success" ></span>
             </td>
             <td th:text="${task.priority}"></td>

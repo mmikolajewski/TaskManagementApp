@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDateTime;
@@ -30,21 +31,7 @@ public class TaskController {
     }
 
     @GetMapping("/list")
-    String list(Model model,
-                @RequestParam(required = false) Category category,
-                @RequestParam(required = false) Long deleteid,
-                @RequestParam(required = false) Long startid) {
-
-        if (startid != null) {
-            Task task = taskRepository.findById(startid).orElseThrow();
-            task.setStartTime(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES));
-            taskRepository.save(task);
-        }
-        if (deleteid != null) {
-            Task task = taskRepository.findById(deleteid).orElseThrow();
-            task.setCompletionTime(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES));
-            taskRepository.save(task);
-        }
+    String list(Model model, @RequestParam(required = false) Category category) {
 
         List<Task> taskList;
         if (category != null) {
@@ -58,7 +45,28 @@ public class TaskController {
         return "/list";
 
     }
+    @GetMapping(value = "/list", params = "startId")
+    String start(@RequestParam(required = false) Long startId) {
+        if (startId != null) {
+            Task task = taskRepository.findById(startId).orElseThrow();
+            task.setStartTime(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES));
+            taskRepository.save(task);
+            return "redirect:/list";
+        }
+        return "/list";
+    }
 
+    @GetMapping(value = "/list", params = "finishId")
+    String finish(@RequestParam(required = false) Long finishId) {
+
+        if (finishId != null) {
+            Task task = taskRepository.findById(finishId).orElseThrow();
+            task.setCompletionTime(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES));
+            taskRepository.save(task);
+            return "redirect:/list";
+        }
+        return "/list";
+    }
     @GetMapping("/archive")
     String archive(Model model,
                    @RequestParam(required = false) Category category) {
