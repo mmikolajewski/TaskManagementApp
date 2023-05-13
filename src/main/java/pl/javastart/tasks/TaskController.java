@@ -45,10 +45,10 @@ public class TaskController {
         return "/list";
 
     }
-    @GetMapping(value = "/list", params = "startId")
-    String start(@RequestParam(required = false) Long startId) {
-        if (startId != null) {
-            Task task = taskRepository.findById(startId).orElseThrow();
+    @GetMapping(value = "/start", params = "id")
+    String start(@RequestParam(required = false) Long id) {
+        if (id != null) {
+            Task task = taskRepository.findById(id).orElseThrow();
             task.setStartTime(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES));
             taskRepository.save(task);
             return "redirect:/list";
@@ -56,11 +56,11 @@ public class TaskController {
         return "/list";
     }
 
-    @GetMapping(value = "/list", params = "finishId")
-    String finish(@RequestParam(required = false) Long finishId) {
+    @GetMapping(value = "/finish", params = "id")
+    String finish(@RequestParam(required = false) Long id) {
 
-        if (finishId != null) {
-            Task task = taskRepository.findById(finishId).orElseThrow();
+        if (id != null) {
+            Task task = taskRepository.findById(id).orElseThrow();
             task.setCompletionTime(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES));
             taskRepository.save(task);
             return "redirect:/list";
