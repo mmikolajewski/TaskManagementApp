@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+</head>
+<body>
+<div class="container text-center">
+
+    <h2 class="display-1">Archiwum</h2>
+    <span> </span>
+    <div class="nav nav-tabs justify-content-center" >
+        <a href="/" class="nav-link active text-danger"><-Powrót do strony głównej</a>
+        <a class="nav-link active" style="color: black"
+           href="/archive" >Wszystkie</a>
+        <a class="nav-link active" style="color: black" th:each="category : ${T(pl.javastart.tasks.Category).values()}"
+           th:href="|/archive?category=${category.name()}|" th:text="${category.description}">Rodzaj</a>
+        <span> </span>
+    </div>
+    <table class="table table-dark table-striped">
+        <thead>
+        <tr class="text-center">
+            <th>Nazwa</th>
+            <th>Opis</th>
+            <th>Kategoria</th>
+            <th>Data dodania</th>
+            <th>Data rozpoczęcia</th>
+            <th>Data zakończenia</th>
+            <th>Czas trwania</th>
+            <th>Priorytet</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="text-center"  th:each="task: ${taskList}">
+            <td th:text="${task.title}"></td>
+            <td th:text="${task.description}"></td>
+            <td th:text="${task.category.description}"></td>
+            <td th:text="${task.addTime.toString().replace('T', ' ')}"></td>
+            <td>
+            <span th:if="${task.startTime == null}" style="color: orange;" >NIE ROZPOCZĘTO</span>
+            <span th:unless="${task.startTime == null}" th:text="${task.startTime.toString().replace('T', ' ')}" style="color: green;" ></span>
+            </td>
+            <td th:text="${task.completionTime.toString().replace('T', ' ')}"></td>
+            <td>
+                <span th:if="${task.startTime == null}" ></span>
+                <span th:unless="${task.startTime == null}" th:text="${taskService.printPeriod(task.startTime, task.completionTime)}" style="color: green;" ></span>
+            </td>
+            <td th:text="${task.priority}"></td>
+            <td> <a th:href="|/edit?id=${task.id}|" >Edytuj</a> </td>
+
+        </tr>
+        </tbody>
+
+    </table>
+
+</div>
+</body>
+</html>

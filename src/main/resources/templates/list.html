@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+</head>
+<body>
+<div class="container text-center">
+
+    <h2 class="display-1">Lista zadań do wykonania</h2>
+    <span> </span>
+    <span> </span>
+    <div class="nav nav-tabs nav justify-content-center padding-bottom" >
+        <a href="/" class="nav-link active text-danger"><-Powrót do strony głównej</a>
+        <a class="nav-link active" style="color: black"
+           href="/list" >Wszystkie</a>
+        <a class="nav-link active" style="color: black" th:each="category : ${T(pl.javastart.tasks.Category).values()}"
+           th:href="|/list?category=${category.name()}|" th:text="${category.description}">Rodzaj</a>
+        <span> </span>
+    </div>
+    <table class="table table-dark table-striped" >
+        <thead>
+        <tr class="text-center">
+            <th>Nazwa</th>
+            <th>Opis</th>
+            <th>Kategoria</th>
+            <th>Data dodania</th>
+            <th>Data startu</th>
+            <th></th>
+            <th>Priorytet</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="text-center" th:each="task: ${taskList}">
+            <td th:text="${task.title}"></td>
+            <td th:text="${task.description}"></td>
+            <td th:text="${task.category.description}"></td>
+            <td th:text="${task.addTime.toString().replace('T', ' ')}"></td>
+            <td>
+                    <a th:if="${task.startTime == null}" th:href="|/start?id=${task.id}|" class="text-warning" >START</a>
+                <span th:unless="${task.startTime == null}" th:text="${task.startTime.toString().replace('T', ' ')}" class="text-success" ></span>
+
+            </td>
+            <td>
+                <a th:if="${task.completionTime == null}" th:href="|/finish?id=${task.id}|" class="text-danger" >ZAKOŃCZ</a>
+                <span th:unless="${task.completionTime == null}" th:text="${task.completionTime.toString().replace('T', ' ')}" class="text-success" ></span>
+            </td>
+            <td th:text="${task.priority}"></td>
+            <td> <a th:href="|/edit?id=${task.id}|" >EDYTUJ</a> </td>
+
+        </tr>
+        </tbody>
+    </table>
+    <a href="/archive"class="badge rounded-pill p-3 mb-2 bg-secondary text-white">Wyświetl archiwum</a></br>
+</div>
+</body>
+</html>
